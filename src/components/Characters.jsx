@@ -43,6 +43,7 @@ export const Characters = () => {
             <button
               onClick={() => fetchNextPage()}
               disabled={!hasNextPage || isFetchingNextPage}
+              id='cy-load-more'
             >
               {isFetchingNextPage
                 ? 'Loading more...'
