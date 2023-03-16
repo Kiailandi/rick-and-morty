@@ -3,14 +3,14 @@ import {
   QueryClient,
   QueryClientProvider
 } from '@tanstack/react-query';
-import { Characters } from './components/characters';
+import { CharactersList } from './components/CharactersList';
 
 const queryClient = new QueryClient();
 
 function App () {
   return (
     <QueryClientProvider client={queryClient}>
-      <Characters />
+      <CharactersList />
     </QueryClientProvider>
   );
 }

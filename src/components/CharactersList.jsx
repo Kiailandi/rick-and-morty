@@ -2,8 +2,9 @@ import React from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchCharacters } from '../api/api';
 import { getNextPageParam } from '../api/utils';
+import { Character } from './Character';
 
-export const Characters = () => {
+export const CharactersList = () => {
   const {
     data,
     error,
@@ -31,11 +32,10 @@ export const Characters = () => {
           {data.pages.map((page, i) => (
             <React.Fragment key={i}>
               {page.results.map((character) => (
-                <div key={character.id} id={`cy-character-${character.id}`}>
-                  <div>
-                    <p>Name: {character.name}</p>
-                  </div>
-                </div>
+                <Character
+                  key={character.id}
+                  character={character}
+                />
               ))}
             </React.Fragment>
           ))}
@@ -43,7 +43,7 @@ export const Characters = () => {
             <button
               onClick={() => fetchNextPage()}
               disabled={!hasNextPage || isFetchingNextPage}
-              id='cy-load-more'
+              data-cy='cy-load-more'
             >
               {isFetchingNextPage
                 ? 'Loading more...'
