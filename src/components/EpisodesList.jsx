@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { List, Typography } from 'antd';
+import { List, Collapse } from 'antd';
 import { fetchEpisodes } from '../api/api';
 import { Episode } from './Episode';
 
-const { Title } = Typography;
+const { Panel } = Collapse;
 
 const renderEpisode = (episode) => {
   return (
@@ -40,12 +40,21 @@ export const EpisodesList = ({ episodesList }) => {
             )
           : (
             <>
-              <Title level={4}>Episodes:</Title>
-              <List
-                itemLayout='horizontal'
-                dataSource={Array.isArray(data) ? data : [data]}
-                renderItem={renderEpisode}
-              />
+              <Collapse>
+                <Panel header={`Episodes (${Array.isArray(data) ? data.length : 1})`} key='1'>
+                  <List
+                    itemLayout='horizontal'
+                    dataSource={Array.isArray(data) ? data : [data]}
+                    renderItem={renderEpisode}
+                    style={{
+                      maxHeight: 300,
+                      overflow: 'auto',
+                      padding: '0 16px'
+                    }}
+                  />
+                </Panel>
+              </Collapse>
+
             </>
             )}
     </div>
