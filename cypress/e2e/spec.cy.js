@@ -31,7 +31,19 @@ describe('The Home Page', () => {
       .should('be.equal', 40);
   });
 
-  it('loads second page of characters (20+20) on load more click', () => {
+  it('fetches first 20 characters\' episodes', () => {
+    cy.intercept('GET', 'https://rickandmortyapi.com/api/episode/*').as('getEpisodes');
+
+    cy.visit('/');
+
+    cy.wait('@getEpisodes').its('response.statusCode').should('eq', 200);
+
+    cy.get('[data-cy^="cy-episodes"]')
+      .its('length')
+      .should('be.equal', 20);
+  });
+
+  it('loads second page (20+20) of characters on load more click', () => {
     cy.intercept('GET', 'https://rickandmortyapi.com/api/character/?page=2').as('getCharactersSecondPage');
 
     cy.visit('/');
