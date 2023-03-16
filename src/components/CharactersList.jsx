@@ -31,9 +31,9 @@ export const CharactersList = () => {
       : (
         <>
           {data.pages.map((page, i) => (
-            <Row key={i} span={{ xs: 8, sm: 16, md: 24, lg: 32 }} gutter={[24, 24]} justify='space-around' align='top'>
+            <Row key={i} span={{ sm: 12, md: 24, lg: 32 }} gutter={[24, 24]} justify='space-around' align='top'>
               {page.results.map((character) => (
-                <Col key={character.id} xs={2} sm={2} md={4} lg={6} justify='space-around' align='middle'>
+                <Col key={character.id} sm={12} md={6} lg={6} justify='space-around' align='middle'>
                   <Character
                     character={character}
                   />
