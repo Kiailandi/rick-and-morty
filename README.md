@@ -18,7 +18,7 @@ Main tech used: *React, React Query, Ant Design, Cypress*.
 ## Possible next steps (time dependant)
 
 - Evaluate to include infinite scrolling with [react-infinite-scroll](https://github.com/ankeetmaini/react-infinite-scroll-component) instead of the 'Load More' button
-- Evaluate if it would make sense to just keep minium info in the cards and move most of the data to a separate profile component -> add routing via [react-router](https://reactrouter.com/)
+- Evaluate if it would make sense to just keep minium info in the cards and move most of the data to a separate profile page -> add routing via [react-router](https://reactrouter.com/)
 - If the point above stands, evaluate to extend "profiles" to locations and episodes
 - Aim for more test coverage + test the not so happy path / corner cases
 - Remove as much as possible from render by creating other / more atomic importable and resuable components
