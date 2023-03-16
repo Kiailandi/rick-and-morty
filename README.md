@@ -4,7 +4,7 @@ A React application to visualize characters from the Rick and Morty TV show.
 
 API used: https://rickandmortyapi.com/
 
-Main tech stack: *React, React Query, Cypress*.
+Main tech used: *React, React Query, Ant Design, Cypress*.
 
 ## Quickstart
 
