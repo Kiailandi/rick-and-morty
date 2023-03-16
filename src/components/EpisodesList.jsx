@@ -1,10 +1,24 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { List, Typography } from 'antd';
 import { fetchEpisodes } from '../api/api';
 import { Episode } from './Episode';
 
+const { Title } = Typography;
+
+const renderEpisode = (episode) => {
+  return (
+    <List.Item key={episode.id} style={{ justifyContent: 'center' }}>
+      <Episode episode={episode} />
+    </List.Item>
+  );
+};
+
 export const EpisodesList = ({ episodesList }) => {
-  const episodesIds = episodesList.map(episodeUrl => episodeUrl.replace(/.*\//, '')).join(',');
+  const episodesIds = useMemo(
+    () => episodesList.map(episodeUrl => episodeUrl.replace(/.*\//, '')).join(','),
+    [episodesList]
+  );
   const {
     data,
     error,
@@ -13,14 +27,6 @@ export const EpisodesList = ({ episodesList }) => {
     queryKey: ['episodes', episodesIds],
     queryFn: fetchEpisodes
   });
-
-  const renderEpisodesList = useCallback((episodes) => {
-    if (Array.isArray(episodes)) {
-      return episodes.map(episode => <Episode key={episode.id} episode={episode} />);
-    } else {
-      return <Episode key={episodes.id} episode={episodes} />;
-    }
-  }, [data, episodesIds]);
 
   return (
     <div data-cy={`cy-episodes-${episodesIds}`}>
@@ -33,10 +39,14 @@ export const EpisodesList = ({ episodesList }) => {
             <p>Error: {error.message}</p>
             )
           : (
-            <div>
-              <p>Episodes: </p>
-              {renderEpisodesList(data)}
-            </div>
+            <>
+              <Title level={4}>Episodes:</Title>
+              <List
+                itemLayout='horizontal'
+                dataSource={Array.isArray(data) ? data : [data]}
+                renderItem={renderEpisode}
+              />
+            </>
             )}
     </div>
   );
