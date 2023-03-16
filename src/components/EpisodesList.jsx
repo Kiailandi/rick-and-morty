@@ -1,10 +1,24 @@
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useCallback } from 'react';
+import { List, Collapse } from 'antd';
 import { fetchEpisodes } from '../api/api';
 import { Episode } from './Episode';
 
+const { Panel } = Collapse;
+
+const renderEpisode = (episode) => {
+  return (
+    <List.Item key={episode.id} style={{ justifyContent: 'center' }}>
+      <Episode episode={episode} />
+    </List.Item>
+  );
+};
+
 export const EpisodesList = ({ episodesList }) => {
-  const episodesIds = episodesList.map(episodeUrl => episodeUrl.replace(/.*\//, '')).join(',');
+  const episodesIds = useMemo(
+    () => episodesList.map(episodeUrl => episodeUrl.replace(/.*\//, '')).join(','),
+    [episodesList]
+  );
   const {
     data,
     error,
@@ -13,14 +27,6 @@ export const EpisodesList = ({ episodesList }) => {
     queryKey: ['episodes', episodesIds],
     queryFn: fetchEpisodes
   });
-
-  const renderEpisodesList = useCallback((episodes) => {
-    if (Array.isArray(episodes)) {
-      return episodes.map(episode => <Episode key={episode.id} episode={episode} />);
-    } else {
-      return <Episode key={episodes.id} episode={episodes} />;
-    }
-  }, [data, episodesIds]);
 
   return (
     <div data-cy={`cy-episodes-${episodesIds}`}>
@@ -33,10 +39,23 @@ export const EpisodesList = ({ episodesList }) => {
             <p>Error: {error.message}</p>
             )
           : (
-            <div>
-              <p>Episodes: </p>
-              {renderEpisodesList(data)}
-            </div>
+            <>
+              <Collapse>
+                <Panel header={`Episodes (${Array.isArray(data) ? data.length : 1})`} key='1'>
+                  <List
+                    itemLayout='horizontal'
+                    dataSource={Array.isArray(data) ? data : [data]}
+                    renderItem={renderEpisode}
+                    style={{
+                      maxHeight: 300,
+                      overflow: 'auto',
+                      padding: '0 16px'
+                    }}
+                  />
+                </Panel>
+              </Collapse>
+
+            </>
             )}
     </div>
   );

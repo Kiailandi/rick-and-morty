@@ -1,5 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
+import { Typography } from 'antd';
 import { fetchLocation } from '../api/api';
+
+const { Title } = Typography;
+
+const LocationInfo = ({ location }) => {
+  const {
+    name,
+    type,
+    dimension,
+    residents
+  } = location;
+
+  return (
+    <>
+      <p><b>Name:</b> {name ?? 'Unknown'}</p>
+      <p><b>Type:</b> {type ?? 'Unknown'}</p>
+      <p><b>Dimension:</b> {dimension ?? 'Unknown'}</p>
+      <p><b>Amount of residents:</b> {residents?.length ?? 'Unknown'}</p>
+    </>
+  );
+};
 
 export const Location = ({ label, location }) => {
   const locationId = location.url.replace(/.*\//, '');
@@ -14,6 +35,7 @@ export const Location = ({ label, location }) => {
 
   return (
     <div data-cy={`cy-location-${locationId}`}>
+      <Title level={5}>{label}</Title>
       {status === 'loading'
         ? (
           <p>Loading...</p>
@@ -23,9 +45,7 @@ export const Location = ({ label, location }) => {
             <p>Error: {error.message}</p>
             )
           : (
-            <>
-              <p>{label}: {data.name ?? 'Unknown'}</p>
-            </>
+            <LocationInfo label={label} location={data} />
             )}
     </div>
   );

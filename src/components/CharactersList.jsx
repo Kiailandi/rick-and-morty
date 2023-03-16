@@ -1,5 +1,6 @@
 import React from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { Col, Row } from 'antd';
 import { fetchCharacters } from '../api/api';
 import { getNextPageParam } from '../api/utils';
 import { Character } from './Character';
@@ -30,29 +31,36 @@ export const CharactersList = () => {
       : (
         <>
           {data.pages.map((page, i) => (
-            <React.Fragment key={i}>
+            <Row key={i} span={{ sm: 12, md: 24, lg: 32 }} gutter={[24, 24]} justify='space-around' align='top'>
               {page.results.map((character) => (
-                <Character
-                  key={character.id}
-                  character={character}
-                />
+                <Col key={character.id} sm={12} md={6} lg={6} justify='space-around' align='middle'>
+                  <Character
+                    character={character}
+                  />
+                </Col>
               ))}
-            </React.Fragment>
+            </Row>
           ))}
-          <div>
-            <button
-              onClick={() => fetchNextPage()}
-              disabled={!hasNextPage || isFetchingNextPage}
-              data-cy='cy-load-more'
-            >
-              {isFetchingNextPage
-                ? 'Loading more...'
-                : hasNextPage
-                  ? 'Load More'
-                  : 'Nothing more to load'}
-            </button>
-          </div>
-          <div>{isFetching && !isFetchingNextPage ? 'Fetching...' : null}</div>
+          <Row justify='space-around' align='middle'>
+            <Col>
+              <button
+                onClick={() => fetchNextPage()}
+                disabled={!hasNextPage || isFetchingNextPage}
+                data-cy='cy-load-more'
+              >
+                {isFetchingNextPage
+                  ? 'Loading more...'
+                  : hasNextPage
+                    ? 'Load More'
+                    : 'Nothing more to load'}
+              </button>
+            </Col>
+          </Row>
+          <Row justify='space-around' align='middle'>
+            <Col>
+              {isFetching && !isFetchingNextPage ? 'Fetching...' : null}
+            </Col>
+          </Row>
         </>
         );
 };
